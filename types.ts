@@ -1,7 +1,7 @@
 export interface Project {
   id: string;
   title: string;
-  role: string; // Added for Credits/Film roles
+  role: string;
   year?: string;
   description: string;
   tags: string[];
@@ -14,6 +14,16 @@ export interface ExperienceItem {
   role: string;
   company: string;
   period: string;
+  description: string[];
+  logo?: string;
+}
+
+export interface EducationItem {
+  id: string;
+  school: string;
+  degree: string;
+  period: string;
+  logo: string;
   description: string[];
 }
 
@@ -34,8 +44,16 @@ export enum SectionId {
   HERO = 'hero',
   ABOUT = 'about',
   EXPERIENCE = 'experience',
+  EDUCATION = 'education',
   SKILLS = 'skills',
-  PROJECTS = 'projects', // Used for Credits
+  PROJECTS = 'projects',
   PRESS = 'press',
+  PHOTOGRAPHY = 'photography',
   CONTACT = 'contact'
+}
+
+declare global {
+  interface WindowEventMap {
+    'trigger-ai-chat': CustomEvent<{ message: string }>;
+  }
 }

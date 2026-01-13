@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import React, { useState, useRef, useEffect, FormEvent, useCallback } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { ChatMessage } from '../types';
+import { useChat } from '../contexts/ChatContext';
 
 const AIChat: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen, pendingMessage, clearPendingMessage } = useChat();
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: 'welcome', role: 'model', text: "Hello. I'm Ryan's portfolio assistant. How can I help you learn more about his background?" }
+    { id: 'welcome', role: 'model', text: "👋 Hello! I'm Ryan's portfolio assistant.\n\n🤖 I can help you learn more about his background.\n\n❓ Ask me anything!" }
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -17,18 +18,18 @@ const AIChat: React.FC = () => {
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (isOpen) {
+      scrollToBottom();
+    }
   }, [messages, isOpen]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isTyping) return;
+  const processUserMessage = useCallback(async (text: string) => {
+    if (!text.trim() || isTyping) return;
 
     const userMsgId = Date.now().toString();
-    const userMessage: ChatMessage = { id: userMsgId, role: 'user', text: input };
+    const userMessage: ChatMessage = { id: userMsgId, role: 'user', text: text };
     
     setMessages(prev => [...prev, userMessage]);
-    setInput('');
     setIsTyping(true);
 
     const modelMsgId = (Date.now() + 1).toString();
@@ -53,13 +54,36 @@ const AIChat: React.FC = () => {
     } finally {
       setIsTyping(false);
     }
+  }, [isTyping]);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const text = input;
+    setInput('');
+    await processUserMessage(text);
+  };
+
+  // Process pending messages from Context (e.g. Hero suggestions)
+  useEffect(() => {
+    if (pendingMessage && !isTyping) {
+      processUserMessage(pendingMessage);
+      clearPendingMessage();
+    }
+  }, [pendingMessage, isTyping, processUserMessage, clearPendingMessage]);
+
+  // Helper to render bold text
+  const formatMessage = (text: string) => {
+    if (!text) return null;
+    return text.split('**').map((part, index) => 
+      index % 2 === 1 ? <strong key={index} className="text-white font-bold">{part}</strong> : part
+    );
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
       {/* Chat Window */}
       <div 
-        className={`bg-slate-900 border-4 border-slate-700 shadow-xl w-80 sm:w-96 mb-4 transition-all duration-200 origin-bottom-right ${
+        className={`bg-slate-900 border-4 border-slate-700 shadow-xl w-[95vw] md:w-[50vw] mb-4 transition-all duration-200 origin-bottom-right pointer-events-auto ${
           isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'
         }`}
       >
@@ -67,7 +91,7 @@ const AIChat: React.FC = () => {
         <div className="bg-slate-950 p-3 border-b-4 border-slate-800 flex justify-between items-center">
           <div className="flex items-center gap-2 text-white font-bold font-['VT323'] text-xl">
             <Bot size={20} />
-            <span>ASSISTANT</span>
+            <span>RYAN DUMLAO AMA</span>
           </div>
           <button 
             onClick={() => setIsOpen(false)}
@@ -78,7 +102,7 @@ const AIChat: React.FC = () => {
         </div>
 
         {/* Messages */}
-        <div className="h-80 overflow-y-auto p-4 bg-slate-900 scrollbar-thin">
+        <div className="h-[50vh] overflow-y-auto p-4 bg-slate-900 scrollbar-thin">
           <div className="space-y-4">
             {messages.map((msg) => (
               <div 
@@ -93,13 +117,13 @@ const AIChat: React.FC = () => {
                   {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                 </div>
                 <div 
-                  className={`max-w-[80%] border-2 border-slate-700 p-2 text-lg font-['VT323'] shadow-sm ${
+                  className={`max-w-[80%] border-2 border-slate-700 p-3 text-lg font-['VT323'] shadow-sm whitespace-pre-wrap ${
                     msg.role === 'user' 
                       ? 'bg-blue-600 text-white' 
                       : 'bg-slate-800 text-slate-200'
                   }`}
                 >
-                  {msg.text || (msg.isLoading && <span className="animate-pulse">Thinking...</span>)}
+                  {msg.text ? formatMessage(msg.text) : (msg.isLoading && <span className="animate-pulse">Thinking...</span>)}
                 </div>
               </div>
             ))}
@@ -129,7 +153,7 @@ const AIChat: React.FC = () => {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`shadow-lg group flex items-center justify-center w-14 h-14 transition-all duration-200 border-4 border-slate-700 ${
+        className={`pointer-events-auto shadow-lg group flex items-center justify-center w-14 h-14 transition-all duration-200 border-4 border-slate-700 ${
           isOpen ? 'bg-slate-800 text-white' : 'bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-1'
         }`}
       >

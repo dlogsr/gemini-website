@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionId, Project } from '../types';
-import { Camera, CircuitBoard, Layout, Database } from 'lucide-react';
+import { Camera, CircuitBoard, Layout, Database, ImageOff } from 'lucide-react';
 
 const projects: Project[] = [
   {
@@ -42,6 +42,12 @@ const projects: Project[] = [
 ];
 
 const Projects: React.FC = () => {
+  const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+
+  const handleImgError = (id: string) => {
+    setImgErrors(prev => ({...prev, [id]: true}));
+  };
+
   return (
     <section id={SectionId.PROJECTS} className="py-24 bg-slate-950">
       <div className="max-w-7xl mx-auto px-6">
@@ -57,16 +63,27 @@ const Projects: React.FC = () => {
             <div key={project.id} className="group border-4 border-slate-800 hover:border-blue-600 transition-colors bg-slate-900">
               
               {/* Image */}
-              <div className="aspect-video w-full overflow-hidden relative border-b-4 border-slate-800 group-hover:border-blue-600 transition-colors">
+              <div className="aspect-video w-full overflow-hidden relative border-b-4 border-slate-800 group-hover:border-blue-600 transition-colors bg-slate-800">
                  <div className="absolute top-0 right-0 p-3 bg-slate-900 border-b-4 border-l-4 border-slate-800 z-10">
                     {project.tags.includes('Research') ? <Database size={20} className="text-slate-400" /> : 
                      project.tags.includes('Hardware') ? <CircuitBoard size={20} className="text-slate-400" /> : <Layout size={20} className="text-slate-400" />}
                  </div>
-                <img 
-                  src={project.imageUrl} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100"
-                />
+                 
+                 {imgErrors[project.id] ? (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-800">
+                        <div className="text-center">
+                            <ImageOff size={48} className="text-slate-700 mx-auto mb-2" />
+                            <span className="text-slate-600 font-['VT323']">Image Offline</span>
+                        </div>
+                    </div>
+                 ) : (
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100"
+                      onError={() => handleImgError(project.id)}
+                    />
+                 )}
               </div>
               
               {/* Content */}

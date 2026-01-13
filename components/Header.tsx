@@ -7,9 +7,11 @@ const Header: React.FC = () => {
 
   const navItems = [
     { label: 'Experience', href: `#${SectionId.EXPERIENCE}` },
-    { label: 'Skills', href: `#${SectionId.SKILLS}` },
+    { label: 'Education', href: `#${SectionId.EDUCATION}` },
     { label: 'Portfolio', href: `#${SectionId.PROJECTS}` },
+    { label: 'Photography', href: `#${SectionId.PHOTOGRAPHY}` },
     { label: 'Press', href: `#${SectionId.PRESS}` },
+    { label: 'Skills', href: `#${SectionId.SKILLS}` },
     { label: 'Contact', href: `#${SectionId.CONTACT}` },
   ];
 
@@ -27,12 +29,12 @@ const Header: React.FC = () => {
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden xl:flex items-center gap-8">
           {navItems.map((item) => (
             <a 
               key={item.label}
               href={item.href}
-              className="text-2xl text-slate-400 hover:text-blue-500 font-['VT323'] uppercase tracking-wide hover:underline decoration-2 decoration-blue-500 underline-offset-4 transition-all"
+              className="text-xl text-slate-400 hover:text-blue-500 font-['VT323'] uppercase tracking-wide hover:underline decoration-2 decoration-blue-500 underline-offset-4 transition-all"
             >
               {item.label}
             </a>
@@ -47,7 +49,7 @@ const Header: React.FC = () => {
           </div>
 
           <button 
-            className="md:hidden text-slate-100 p-2 border-2 border-slate-700 hover:bg-slate-800"
+            className="xl:hidden text-slate-100 p-2 border-2 border-slate-700 hover:bg-slate-800"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -57,7 +59,7 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden absolute top-20 left-0 right-0 bg-slate-950 border-b-4 border-slate-800 p-6 flex flex-col gap-4 shadow-xl">
+        <div className="xl:hidden absolute top-20 left-0 right-0 bg-slate-950 border-b-4 border-slate-800 p-6 flex flex-col gap-4 shadow-xl">
           {navItems.map((item) => (
             <a 
               key={item.label}
