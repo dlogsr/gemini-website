@@ -56,4 +56,11 @@ declare global {
   interface WindowEventMap {
     'trigger-ai-chat': CustomEvent<{ message: string }>;
   }
+  interface Window {
+    process: {
+      env: {
+        [key: string]: string | undefined;
+      };
+    };
+  }
 }

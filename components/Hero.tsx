@@ -105,8 +105,10 @@ const Hero: React.FC = () => {
     if (videoUrl || isGenerating) return;
 
     try {
-        if (!(window as any).aistudio.hasSelectedApiKey()) {
-            await (window as any).aistudio.openSelectKey();
+        if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
+            if (!window.aistudio.hasSelectedApiKey()) {
+                await window.aistudio.openSelectKey();
+            }
         }
 
         setIsGenerating(true);
@@ -116,6 +118,7 @@ const Hero: React.FC = () => {
         const base64Data = await getBase64Image(imgError ? fallbackSrc : imgSrc);
 
         // 2. Init AI
+        // Always create a new instance to pick up the latest API key from env
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         
         setGenerationStatus("Generating dance moves (this takes ~1-2 mins)...");
@@ -160,22 +163,27 @@ const Hero: React.FC = () => {
 
     } catch (e: any) {
         console.error("Easter egg failed:", e);
-        let errorMessage = "Could not generate the dance video.";
         
-        // Improve error message extraction
-        if (e?.message) {
-             errorMessage += `\n\n${e.message}`;
-        } else if (e && typeof e === 'object') {
+        const errorBody = JSON.stringify(e);
+        const isPermissionError = errorBody.includes("403") || errorBody.includes("PERMISSION_DENIED");
+        const isNotFoundError = errorBody.includes("Requested entity was not found");
+
+        if ((isPermissionError || isNotFoundError) && window.aistudio) {
              try {
-                errorMessage += `\n\n${JSON.stringify(e)}`;
-             } catch {
-                errorMessage += `\n\n${String(e)}`;
+                 await window.aistudio.openSelectKey();
+                 alert("The previously selected API Key was invalid or lacked permissions. Please select a valid Paid API Key to try again.");
+             } catch (k) {
+                 console.error("Failed to open key selector", k);
              }
         } else {
-             errorMessage += `\n\n${String(e)}`;
+             let errorMessage = "Could not generate the dance video.";
+             if (e?.message) {
+                  errorMessage += `\n\n${e.message}`;
+             } else {
+                  errorMessage += `\n\n${String(e)}`;
+             }
+             alert(errorMessage);
         }
-        
-        alert(errorMessage);
     } finally {
         setIsGenerating(false);
     }

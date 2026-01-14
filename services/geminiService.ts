@@ -46,24 +46,19 @@ Guidelines:
 `;
 
 let chatSession: Chat | null = null;
-let genAI: GoogleGenAI | null = null;
-
-const getGenAI = (): GoogleGenAI => {
-  if (!genAI) {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) {
-      console.error("API_KEY is missing from environment variables.");
-      throw new Error("API Key not found");
-    }
-    genAI = new GoogleGenAI({ apiKey });
-  }
-  return genAI;
-};
 
 export const initializeChat = (): Chat => {
   if (chatSession) return chatSession;
 
-  const ai = getGenAI();
+  const apiKey = process.env.API_KEY;
+  if (!apiKey) {
+    console.error("API_KEY is missing from environment variables.");
+    throw new Error("API Key not found");
+  }
+  
+  // Do not cache the AI instance globally to avoid stale keys
+  const ai = new GoogleGenAI({ apiKey });
+  
   chatSession = ai.chats.create({
     model: 'gemini-3-flash-preview',
     config: {
