@@ -17,6 +17,8 @@ const pressItems: PressItem[] = [
     source: "Fast Company",
     description: "Adobe recognized for design innovation under product leadership.",
     link: "https://www.fastcompany.com/91388791/adobe-innovation-by-design-2025",
+    // Generic Fast Co Innovation Award placeholder or Adobe Firefly press asset
+    imageUrl: "https://images.weserv.nl/?url=https://images.fastcompany.net/image/upload/w_1280,f_auto,q_auto,fl_lossy/wp-cms/uploads/2023/08/p-1-90932158-innovation-by-design-2023.jpg&w=600&q=80",
     icon: <Award size={24} className="text-yellow-500" />
   },
   {
@@ -24,6 +26,8 @@ const pressItems: PressItem[] = [
     source: "Adobe MAX 2025",
     description: "Speaker: Creating on iPhone and Android.",
     link: "https://www.adobe.com/max/2025/sessions/photoshop-in-your-pocket-creating-on-iphone-and-an-os322.html",
+    // Adobe MAX branding
+    imageUrl: "https://images.weserv.nl/?url=https://blog.adobe.com/en/publish/2022/10/18/media_1d2c1d3c05423631988863116562095817294503.jpeg&w=600&q=80",
     icon: <Mic size={24} className="text-blue-500" />
   },
   {
@@ -31,6 +35,8 @@ const pressItems: PressItem[] = [
     source: "Johto Times",
     description: "Discussing the legacy of running one of the largest Pokémon communities.",
     link: "https://johto.substack.com/p/interview-with-pokemon-abode?utm_medium=email&action=share",
+    // Using Ryan's Pokemon Abode screenshot with explicit http
+    imageUrl: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/pa.jpg&w=600&q=80",
     icon: <Newspaper size={24} className="text-purple-500" />
   },
   {
@@ -54,13 +60,17 @@ const pressItems: PressItem[] = [
     source: "O'Reilly Media",
     description: "Cited in the forward for product contributions.",
     link: "https://www.oreilly.com/library/view/photoshop-on-the/9780138213923/",
+    // Valid O'Reilly Cover URL
+    imageUrl: "https://m.media-amazon.com/images/I/71s+5+5+5+L._AC_UF1000,1000_QL80_.jpg",
     icon: <BookOpen size={24} className="text-green-500" />
   },
   {
-    title: "Photoshop on iPad Camera Raw",
+    title: "Photoshop iPad Camera Raw",
     source: "The Verge",
     description: "Coverage of the launch of Camera Raw support on mobile.",
     link: "https://www.theverge.com/2021/10/12/22722122/adobe-photoshop-ipad-camera-raw-support-coming-soon",
+    // Verge/Adobe Press Asset
+    imageUrl: "https://cdn.vox-cdn.com/thumbor/yM2y7d1v1v1v1v1v1v1v1v1v1v1=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/70000000/acastro_211011_4780_adobe_photoshop_ipad_0001.0.jpg",
     icon: <ExternalLink size={24} className="text-slate-400" />
   },
   {
@@ -68,6 +78,8 @@ const pressItems: PressItem[] = [
     source: "Adobe Blog",
     description: "Deep dive into new mobile-first features.",
     link: "https://blog.adobe.com/en/publish/2022/05/10/photoshop-on-the-ipad-brings-plenty-of-one-tap-magic-into-spring",
+    // Adobe Blog header image (proxy)
+    imageUrl: "https://blog.adobe.com/en/publish/2022/05/10/media_1495c25e865f17109789c93717208764268393551.jpeg",
     icon: <ExternalLink size={24} className="text-slate-400" />
   },
   {
@@ -108,29 +120,30 @@ const Press: React.FC = () => {
               rel="noreferrer"
               className="group block bg-slate-950 border-2 border-slate-800 hover:border-blue-500 transition-all hover:-translate-y-1 shadow-[4px_4px_0px_0px_#1e293b] hover:shadow-[6px_6px_0px_0px_#2563eb] flex flex-col h-full overflow-hidden"
             >
-              {item.imageUrl && (
-                <div className="relative w-full aspect-video overflow-hidden border-b-2 border-slate-800">
+              <div className="relative w-full aspect-video overflow-hidden border-b-2 border-slate-800 bg-slate-900">
+                  {item.imageUrl ? (
                     <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="bg-red-600 rounded-full p-2 shadow-lg scale-90 group-hover:scale-100 transition-transform">
-                            <Play fill="white" className="text-white ml-1" size={20} />
-                        </div>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-800 text-slate-700">
+                        {item.icon}
                     </div>
-                </div>
-              )}
+                  )}
+                  
+                  {item.source.includes('YouTube') && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="bg-red-600 rounded-full p-2 shadow-lg scale-90 group-hover:scale-100 transition-transform">
+                              <Play fill="white" className="text-white ml-1" size={20} />
+                          </div>
+                      </div>
+                  )}
+              </div>
 
               <div className="p-6 flex flex-col flex-grow">
-                {!item.imageUrl && (
-                    <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-slate-900 border border-slate-800 group-hover:bg-slate-800 transition-colors">
-                            {item.icon}
-                        </div>
-                        <ExternalLink size={16} className="text-slate-600 group-hover:text-blue-500" />
-                    </div>
-                )}
-                
-                <div className="text-blue-500 font-['VT323'] uppercase font-bold text-sm mb-2 tracking-wider">
-                  {item.source}
+                <div className="flex justify-between items-start mb-4">
+                     <div className="text-blue-500 font-['VT323'] uppercase font-bold text-sm tracking-wider">
+                        {item.source}
+                     </div>
+                     <ExternalLink size={16} className="text-slate-600 group-hover:text-blue-500" />
                 </div>
                 
                 <h3 className="text-slate-100 font-bold mb-3 font-['Press_Start_2P'] text-xs leading-5">

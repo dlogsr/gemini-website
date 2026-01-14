@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionId } from '../types';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, ImageOff } from 'lucide-react';
 
 const Contact: React.FC = () => {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <section id={SectionId.CONTACT} className="py-24 bg-slate-950 text-white border-t-8 border-slate-800">
       <div className="max-w-6xl mx-auto px-6">
@@ -39,12 +41,20 @@ const Contact: React.FC = () => {
           {/* Right: Image */}
           <div className="relative">
              <div className="w-full aspect-[4/3] bg-slate-900 border-4 border-slate-700 p-2 shadow-[8px_8px_0px_0px_#1e293b]">
-                <div className="w-full h-full border-2 border-slate-800 overflow-hidden">
-                   <img 
-                      src="http://www.ryandumlao.com/links.jpg" 
-                      alt="Travel & Links" 
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                   />
+                <div className="w-full h-full border-2 border-slate-800 overflow-hidden flex items-center justify-center bg-slate-800">
+                   {!imgError ? (
+                       <img 
+                          src="https://images.weserv.nl/?url=http://www.ryandumlao.com/img/contact.jpg&w=800&q=80" 
+                          alt="Travel & Links" 
+                          className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                          onError={() => setImgError(true)}
+                       />
+                   ) : (
+                       <div className="flex flex-col items-center justify-center text-slate-600">
+                           <ImageOff size={48} className="mb-2" />
+                           <span className="font-['VT323']">Image Offline</span>
+                       </div>
+                   )}
                 </div>
              </div>
              {/* Decorative element */}

@@ -14,8 +14,11 @@ const Hero: React.FC = () => {
   
   const { triggerChat } = useChat();
   
-  const imgSrc = "http://www.ryandumlao.com/headshot3.jpg";
-  // Used for generation
+  // Use image proxy to handle Mixed Content (HTTP on HTTPS) and CORS
+  // Explicitly specifying http:// protocol for the source url
+  const imgSrc = "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/profile.jpg&w=800&q=80&output=jpg";
+  
+  // Fallback for generation if the main image fails or CORS blocks it
   const fallbackSrc = "https://ui-avatars.com/api/?name=Ryan+Dumlao&background=1e293b&color=3b82f6&size=512&font-size=0.33&bold=true";
 
   useEffect(() => {
@@ -23,6 +26,7 @@ const Hero: React.FC = () => {
 
     const generatePixelatedVersion = () => {
         const img = new Image();
+        // CORS is required for canvas manipulation; the proxy provides this header.
         img.crossOrigin = "Anonymous";
         img.src = imgSrc;
 
@@ -46,12 +50,11 @@ const Hero: React.FC = () => {
                     setPixelatedSrc(canvas.toDataURL());
                 }
             } catch (e) {
-                // If CORS fails, we simply won't have the pixelated effect
                 console.warn("Could not generate pixel art version:", e);
             }
         };
         img.onerror = () => {
-             // Silence error here, handled by main img tag
+             // Handled by main img tag error handler
         };
     };
 
@@ -102,8 +105,8 @@ const Hero: React.FC = () => {
     if (videoUrl || isGenerating) return;
 
     try {
-        if (!window.aistudio.hasSelectedApiKey()) {
-            await window.aistudio.openSelectKey();
+        if (!(window as any).aistudio.hasSelectedApiKey()) {
+            await (window as any).aistudio.openSelectKey();
         }
 
         setIsGenerating(true);
@@ -207,7 +210,7 @@ const Hero: React.FC = () => {
             <div className="flex justify-center mb-6">
                 <div className="inline-flex items-center gap-2 text-blue-400 font-bold font-['VT323'] text-xl animate-pulse">
                     <Bot size={24} />
-                    <span>AI_ASSISTANT_ONLINE</span>
+                    <span>RYAN DUMLAO AMA BOT</span>
                 </div>
             </div>
 
@@ -328,7 +331,7 @@ const Hero: React.FC = () => {
             {/* Right Column: Text */}
             <div className="order-2 md:order-2">
                 <div className="inline-block px-3 py-1 bg-slate-800 text-blue-400 font-bold font-['VT323'] text-lg mb-6 tracking-wide border-2 border-slate-700">
-                    BAY AREA NATIVE
+                    CREATIVE PRODUCT MANAGEMENT
                 </div>
                 
                 <h1 className="text-4xl md:text-6xl text-slate-100 leading-none mb-6 font-['Press_Start_2P']">

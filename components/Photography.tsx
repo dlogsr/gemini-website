@@ -23,12 +23,14 @@ const Photography: React.FC = () => {
   const FLICKR_ALBUM_ID = '72157633423617771';
   const FLICKR_NSID = '92316068@N00'; 
 
-  // Fallback photos in case API fails (to ensure section isn't empty)
+  // Fallback photos using Ryan's existing site assets if Flickr API fails
+  // This avoids generic stock imagery
   const FALLBACK_PHOTOS: FlickrPhoto[] = [
-    { title: "San Francisco", link: "#", media: { m: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=500&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    { title: "Architecture", link: "#", media: { m: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=500&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    { title: "Urban", link: "#", media: { m: "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?w=500&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    { title: "Travel", link: "#", media: { m: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&q=80" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Portfolio Profile", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/profile.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Travel & Contact", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/contact.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
+    // Reusing project images as photographic samples if API fails
+    { title: "Pokémon Abode Legacy", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/pa.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Engineering Research", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/gaas.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
   ];
 
   useEffect(() => {
@@ -53,16 +55,15 @@ const Photography: React.FC = () => {
         setPhotos(data.items);
         setLoading(false);
       } else {
-        console.warn("Invalid Flickr response, using fallback.");
+        console.warn("Invalid Flickr response, using personal fallback.");
         setPhotos(FALLBACK_PHOTOS);
         setLoading(false);
-        // We don't set error=true here to show the fallback photos instead of error message
       }
       cleanup();
     };
 
     script.onerror = (e) => {
-      console.warn("Failed to load Flickr script, using fallback.", e);
+      console.warn("Failed to load Flickr script, using personal fallback.", e);
       if (mounted) {
         setPhotos(FALLBACK_PHOTOS);
         setLoading(false);
