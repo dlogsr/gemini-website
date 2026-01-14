@@ -1,15 +1,15 @@
 import React from 'react';
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Skills from './components/Skills';
-import Experience from './components/Experience';
-import Education from './components/Education';
-import Projects from './components/Projects';
-import Photography from './components/Photography';
-import Contact from './components/Contact';
-import AIChat from './components/AIChat';
-import Press from './components/Press';
-import { ChatProvider } from './contexts/ChatContext';
+import Header from './components/Header.tsx';
+import Hero from './components/Hero.tsx';
+import Skills from './components/Skills.tsx';
+import Experience from './components/Experience.tsx';
+import Education from './components/Education.tsx';
+import Projects from './components/Projects.tsx';
+import Photography from './components/Photography.tsx';
+import Contact from './components/Contact.tsx';
+import AIChat from './components/AIChat.tsx';
+import Press from './components/Press.tsx';
+import { ChatProvider } from './contexts/ChatContext.tsx';
 
 function App() {
   return (

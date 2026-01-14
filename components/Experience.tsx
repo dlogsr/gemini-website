@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionId, ExperienceItem } from '../types';
+import { SectionId, ExperienceItem } from '../types.ts';
 import { Briefcase } from 'lucide-react';
 
 const experiences: ExperienceItem[] = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SectionId, EducationItem } from '../types';
+import { SectionId, EducationItem } from '../types.ts';
 import { GraduationCap } from 'lucide-react';
 
 const educationData: EducationItem[] = [

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Download, Loader2, Sparkles, Bot, Search } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
-import { SectionId } from '../types';
-import { useChat } from '../contexts/ChatContext';
+import { SectionId } from '../types.ts';
+import { useChat } from '../contexts/ChatContext.tsx';
 
 const Hero: React.FC = () => {
   const [pixelatedSrc, setPixelatedSrc] = useState<string | null>(null);
@@ -105,9 +105,10 @@ const Hero: React.FC = () => {
     if (videoUrl || isGenerating) return;
 
     try {
-        if (window.aistudio && typeof window.aistudio.hasSelectedApiKey === 'function') {
-            if (!window.aistudio.hasSelectedApiKey()) {
-                await window.aistudio.openSelectKey();
+        const win = window as any;
+        if (win.aistudio && typeof win.aistudio.hasSelectedApiKey === 'function') {
+            if (!win.aistudio.hasSelectedApiKey()) {
+                await win.aistudio.openSelectKey();
             }
         }
 
@@ -167,10 +168,12 @@ const Hero: React.FC = () => {
         const errorBody = JSON.stringify(e);
         const isPermissionError = errorBody.includes("403") || errorBody.includes("PERMISSION_DENIED");
         const isNotFoundError = errorBody.includes("Requested entity was not found");
+        
+        const win = window as any;
 
-        if ((isPermissionError || isNotFoundError) && window.aistudio) {
+        if ((isPermissionError || isNotFoundError) && win.aistudio) {
              try {
-                 await window.aistudio.openSelectKey();
+                 await win.aistudio.openSelectKey();
                  alert("The previously selected API Key was invalid or lacked permissions. Please select a valid Paid API Key to try again.");
              } catch (k) {
                  console.error("Failed to open key selector", k);

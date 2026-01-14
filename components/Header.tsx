@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X, Github, Linkedin } from 'lucide-react';
-import { SectionId } from '../types';
+import { SectionId } from '../types.ts';
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

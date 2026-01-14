@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
-import { SectionId, SkillMetric } from '../types';
+import { SectionId, SkillMetric } from '../types.ts';
 
 const data: SkillMetric[] = [
   { subject: 'Strategy', A: 90, fullMark: 100 },

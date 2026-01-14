@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionId } from '../types';
+import { SectionId } from '../types.ts';
 import { Mail, MapPin, ImageOff } from 'lucide-react';
 
 const Contact: React.FC = () => {

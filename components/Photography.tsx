@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SectionId } from '../types';
+import { SectionId } from '../types.ts';
 import { ExternalLink, Image as ImageIcon, Loader2, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface FlickrPhoto {

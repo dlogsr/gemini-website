@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, FormEvent, useCallback } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
-import { sendMessageToGemini } from '../services/geminiService';
-import { ChatMessage } from '../types';
-import { useChat } from '../contexts/ChatContext';
+import { sendMessageToGemini } from '../services/geminiService.ts';
+import { ChatMessage } from '../types.ts';
+import { useChat } from '../contexts/ChatContext.tsx';
 
 const AIChat: React.FC = () => {
   const { isOpen, setIsOpen, pendingMessage, clearPendingMessage } = useChat();

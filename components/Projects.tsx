@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SectionId, Project } from '../types';
+import { SectionId, Project } from '../types.ts';
 import { Camera, CircuitBoard, Layout, Database, ImageOff } from 'lucide-react';
 
 const projects: Project[] = [
