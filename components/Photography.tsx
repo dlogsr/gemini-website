@@ -24,13 +24,11 @@ const Photography: React.FC = () => {
   const FLICKR_NSID = '92316068@N00'; 
 
   // Fallback photos using Ryan's existing site assets if Flickr API fails
-  // This avoids generic stock imagery
   const FALLBACK_PHOTOS: FlickrPhoto[] = [
-    { title: "Portfolio Profile", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/profile.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    { title: "Travel & Contact", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/contact.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    // Reusing project images as photographic samples if API fails
-    { title: "Pokémon Abode Legacy", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/pa.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
-    { title: "Engineering Research", link: "#", media: { m: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/gaas.jpg&w=800&q=80" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Portfolio Profile", link: "#", media: { m: "./assets/img/profile.jpg" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Travel & Contact", link: "#", media: { m: "./assets/img/contact.jpg" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Pokémon Abode Legacy", link: "#", media: { m: "./assets/img/portfolio/pa.jpg" }, date_taken: "", description: "", author: "", tags: "" },
+    { title: "Engineering Research", link: "#", media: { m: "./assets/img/portfolio/gaas.jpg" }, date_taken: "", description: "", author: "", tags: "" },
   ];
 
   useEffect(() => {

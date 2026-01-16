@@ -9,8 +9,7 @@ const projects: Project[] = [
     role: 'Full Stack',
     description: 'A responsive web application developed for The Medicines Company, used as a primary sales and educational tool for hospital representatives globally.',
     tags: ['JavaScript', 'Responsive', 'Sales Tool'],
-    // Using image proxy for HTTPS compatibility with explicit http protocol
-    imageUrl: 'https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/ionsys.jpg&w=800&q=80',
+    imageUrl: './assets/img/portfolio/ionsys.jpg',
     link: '#'
   },
   {
@@ -19,7 +18,7 @@ const projects: Project[] = [
     role: 'Founder / Dev',
     description: 'Founded and maintained one of the internet’s largest Pokémon fansites. Managed community, content strategy, and server infrastructure.',
     tags: ['Web Dev', 'Community', 'Legacy'],
-    imageUrl: 'https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/pa.jpg&w=800&q=80',
+    imageUrl: './assets/img/portfolio/pa.jpg',
     link: '#'
   },
   {
@@ -28,7 +27,7 @@ const projects: Project[] = [
     role: 'Research',
     description: 'Master\'s research on modeling the Surface State Density and Resistivity in n-doped GaAs nanopillars for potential optoelectronic applications.',
     tags: ['Research', 'Physics', 'Modeling'],
-    imageUrl: 'https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/gaas.jpg&w=800&q=80',
+    imageUrl: './assets/img/portfolio/gaas.jpg',
     link: '#'
   },
   {
@@ -37,7 +36,7 @@ const projects: Project[] = [
     role: 'Web Design',
     description: 'Designed a responsive site for an indie game studio using SCSS/Sass. Focused on clean aesthetics and mobile compatibility.',
     tags: ['SCSS', 'Responsive', 'Gaming'],
-    imageUrl: 'https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/mbg.jpg&w=800&q=80',
+    imageUrl: './assets/img/portfolio/mbg.jpg',
     link: '#'
   }
 ];

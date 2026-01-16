@@ -8,7 +8,7 @@ const experiences: ExperienceItem[] = [
     role: 'Group Product Manager',
     company: 'Adobe',
     period: '2018 — Present',
-    logo: 'https://logo.clearbit.com/adobe.com',
+    logo: './assets/img/logos/adobe.png',
     description: [
       'Group PM (2023-Present): Leading product strategy for Photoshop on Mobile (iOS, Android). Managing a team of PMs driving growth and retention.',
       'Senior PM (2021-2023): Spearheaded the launch of Camera Raw support and "One-Tap" actions on iPad, bringing desktop-class power to touch devices.',
@@ -21,7 +21,7 @@ const experiences: ExperienceItem[] = [
     role: 'Product Manager',
     company: 'ChowNow',
     period: '2018',
-    logo: 'https://logo.clearbit.com/chownow.com',
+    logo: './assets/img/logos/chownow.png',
     description: [
       'Led product initiatives for the online ordering platform, focusing on restaurant partner retention and consumer conversion.',
       'Collaborated with engineering to optimize the "Order Ahead" checkout flow, reducing friction for hungry users.',
@@ -33,7 +33,7 @@ const experiences: ExperienceItem[] = [
     role: 'Product Manager, MBA Intern',
     company: 'Juniper Networks',
     period: '2017',
-    logo: 'https://logo.clearbit.com/juniper.net',
+    logo: './assets/img/logos/juniper.png',
     description: [
       'Pioneered product strategy for public cloud (AWS, Azure, GCP).',
       'Developed use cases and joint integrations with cloud start-ups.',
@@ -45,7 +45,7 @@ const experiences: ExperienceItem[] = [
     role: 'Associate Product Manager Intern',
     company: 'TeleSign',
     period: '2017',
-    logo: 'https://logo.clearbit.com/telesign.com',
+    logo: './assets/img/logos/telesign.png',
     description: [
       'Established new product roadmap during strategy pivot.',
       'Substantiated underserved use cases through user interviews.',
@@ -57,7 +57,7 @@ const experiences: ExperienceItem[] = [
     role: 'Senior Electrical Engineer',
     company: 'The Medicines Company',
     period: '2013 — 2016',
-    logo: 'https://logo.clearbit.com/novartis.com', // Acquired by Novartis
+    logo: './assets/img/logos/novartis.png',
     description: [
       'Developed IONSYS™ fentanyl iontophoretic transdermal system.',
       'Completed regulatory efforts for US FDA and EU MAA approvals.',
@@ -69,7 +69,7 @@ const experiences: ExperienceItem[] = [
     role: 'Electrical Engineer II',
     company: 'Raytheon',
     period: '2010 — 2013',
-    logo: 'https://logo.clearbit.com/rtx.com',
+    logo: './assets/img/logos/rtx.png',
     description: [
       'Engineering Rotation: Optical Engineer (VIIRS), Quality Manager, Finance.',
       'Designed Radar Special Test Equipment for F/A-18 & F-15.',
@@ -81,7 +81,7 @@ const experiences: ExperienceItem[] = [
     role: 'Electrical Engineer',
     company: 'Space Micro Inc.',
     period: '2009 — 2010',
-    logo: 'https://logo.clearbit.com/spacemicro.com',
+    logo: './assets/img/logos/spacemicro.png',
     description: [
       'Designed radiation-hardened satellite communication systems.',
       'Performed thermal and vibration testing for flight hardware.',
@@ -93,7 +93,7 @@ const experiences: ExperienceItem[] = [
     role: 'Founder & Lead Developer',
     company: 'Pokémon Abode',
     period: '1999 — Present',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Pok%C3%A9_Ball_icon.svg',
+    logo: './assets/img/logos/pokeball.svg',
     description: [
       'Founded one of the internet’s largest and longest-running Pokémon fan communities.',
       'Designed and developed the full stack (LAMP) from scratch, managing high-traffic server infrastructure.',
@@ -117,13 +117,9 @@ const Experience: React.FC = () => {
       </div>
 
       <div className="relative space-y-16">
-        {/* Center Line */}
         <div className="absolute left-8 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-slate-800 z-0"></div>
-
         {experiences.map((exp, index) => (
           <div key={exp.id} className={`relative flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-            
-            {/* Icon/Logo Node */}
             <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-16 h-16 bg-white border-4 border-slate-700 z-10 flex items-center justify-center shadow-lg rounded-full overflow-hidden">
                {exp.logo && !imgErrors[exp.id] ? (
                  <img 
@@ -136,23 +132,16 @@ const Experience: React.FC = () => {
                  <Briefcase size={24} className="text-slate-900" />
                )}
             </div>
-
-            {/* Content Card */}
             <div className="pl-24 md:pl-0 w-full md:w-[45%] group z-20 relative">
               <div className="bg-slate-900 border-2 border-slate-800 p-6 hover:border-blue-500 transition-colors shadow-sm hover:shadow-lg hover:shadow-blue-900/20 relative">
-                
-                {/* Connector Arrow */}
                 <div className={`hidden md:block absolute top-6 w-4 h-4 bg-slate-900 border-t-2 border-l-2 border-slate-800 group-hover:border-blue-500 transition-colors rotate-45 ${index % 2 === 0 ? '-right-2.5 border-t-2 border-r-2 border-l-0 border-b-0' : '-left-2.5'}`}></div>
-
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
                     <h3 className="text-xl text-slate-100 font-bold tracking-tight font-['Press_Start_2P'] text-sm leading-6">{exp.role}</h3>
                     <span className="self-start inline-block px-2 py-1 bg-slate-800 text-blue-400 text-sm font-bold font-['VT323'] border border-slate-700 whitespace-nowrap">
                         {exp.period}
                     </span>
                 </div>
-                
                 <div className="text-lg text-blue-500 mb-4 font-['VT323'] uppercase font-bold tracking-wide">{exp.company}</div>
-                
                 <ul className="space-y-3">
                   {exp.description.map((point, i) => (
                     <li key={i} className="flex items-start gap-3 text-slate-400 text-lg font-['VT323'] leading-tight">
@@ -163,8 +152,6 @@ const Experience: React.FC = () => {
                 </ul>
               </div>
             </div>
-            
-            {/* Empty side for layout balance */}
             <div className="hidden md:block w-[45%]"></div>
           </div>
         ))}

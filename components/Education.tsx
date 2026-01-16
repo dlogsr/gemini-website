@@ -8,7 +8,7 @@ const educationData: EducationItem[] = [
     school: 'UCLA Anderson School of Management',
     degree: 'Master of Business Administration (MBA)',
     period: '2016 — 2018',
-    logo: 'https://logo.clearbit.com/anderson.ucla.edu',
+    logo: './assets/img/logos/anderson.png',
     description: [
       'Collins Family Fellow ($40k Merit Fellowship)',
       'Student Investment Fund Fellow',
@@ -21,7 +21,7 @@ const educationData: EducationItem[] = [
     school: 'UCLA',
     degree: 'M.S. Electrical Engineering',
     period: '2008 — 2010',
-    logo: 'https://logo.clearbit.com/ucla.edu',
+    logo: './assets/img/logos/ucla.png',
     description: [
       'Focus: Solid State & Photonics',
       'Research: Surface State Density in GaAs Nanopillars',
@@ -33,7 +33,7 @@ const educationData: EducationItem[] = [
     school: 'UC San Diego',
     degree: 'B.S. Electrical Engineering',
     period: '2004 — 2008',
-    logo: 'https://logo.clearbit.com/ucsd.edu',
+    logo: './assets/img/logos/ucsd.png',
     description: [
       'Focus: Photonics',
       'Minor: Japanese Studies',

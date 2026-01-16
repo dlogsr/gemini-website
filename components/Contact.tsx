@@ -44,7 +44,7 @@ const Contact: React.FC = () => {
                 <div className="w-full h-full border-2 border-slate-800 overflow-hidden flex items-center justify-center bg-slate-800">
                    {!imgError ? (
                        <img 
-                          src="https://images.weserv.nl/?url=http://www.ryandumlao.com/img/contact.jpg&w=800&q=80" 
+                          src="./assets/img/contact.jpg" 
                           alt="Travel & Links" 
                           className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                           onError={() => setImgError(true)}

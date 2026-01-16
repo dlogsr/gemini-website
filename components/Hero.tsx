@@ -1,42 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Download, Loader2, Sparkles, Bot, Search } from 'lucide-react';
-import { GoogleGenAI } from "@google/genai";
+import { ArrowRight, Download, Bot, Search, Sparkles } from 'lucide-react';
 import { SectionId } from '../types.ts';
 import { useChat } from '../contexts/ChatContext.tsx';
 
 const Hero: React.FC = () => {
   const [pixelatedSrc, setPixelatedSrc] = useState<string | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generationStatus, setGenerationStatus] = useState("");
   const [promptInput, setPromptInput] = useState("");
   const [imgError, setImgError] = useState(false);
   
   const { triggerChat } = useChat();
   
-  // Use image proxy to handle Mixed Content (HTTP on HTTPS) and CORS
-  // Explicitly specifying http:// protocol for the source url
-  const imgSrc = "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/profile.jpg&w=800&q=80&output=jpg";
-  
-  // Fallback for generation if the main image fails or CORS blocks it
-  const fallbackSrc = "https://ui-avatars.com/api/?name=Ryan+Dumlao&background=1e293b&color=3b82f6&size=512&font-size=0.33&bold=true";
+  const imgSrc = "./assets/img/profile.jpg";
 
   useEffect(() => {
     if (imgError) return;
 
     const generatePixelatedVersion = () => {
         const img = new Image();
-        // CORS is required for canvas manipulation; the proxy provides this header.
-        img.crossOrigin = "Anonymous";
         img.src = imgSrc;
 
         img.onload = () => {
             try {
                 const canvas = document.createElement('canvas');
-                // Use a small size to create the pixel effect when scaled up
                 const size = 64; 
                 
-                // Calculate aspect ratio to prevent distortion
                 const aspect = img.naturalWidth / img.naturalHeight;
                 const canvasWidth = size;
                 const canvasHeight = size / aspect;
@@ -53,144 +40,11 @@ const Hero: React.FC = () => {
                 console.warn("Could not generate pixel art version:", e);
             }
         };
-        img.onerror = () => {
-             // Handled by main img tag error handler
-        };
+        img.onerror = () => { };
     };
 
     generatePixelatedVersion();
   }, [imgSrc, imgError]);
-
-  const getBase64Image = async (url: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return reject(new Error('Canvas context failed'));
-        ctx.drawImage(img, 0, 0);
-        const dataURL = canvas.toDataURL('image/jpeg');
-        // Remove the prefix to get raw base64 bytes
-        resolve(dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''));
-      };
-      img.onerror = () => {
-        // If the original URL fails, try to return a generated placeholder base64
-        // This ensures the AI generation always has *something* to work with
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 512;
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-            ctx.fillStyle = "#1e293b";
-            ctx.fillRect(0, 0, 512, 512);
-            ctx.fillStyle = "#3b82f6";
-            ctx.font = "bold 120px monospace";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText("RD", 256, 256);
-            const dataURL = canvas.toDataURL('image/jpeg');
-            resolve(dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, ''));
-        } else {
-            reject(new Error("Failed to load image and failed to generate fallback"));
-        }
-      };
-      img.src = url;
-    });
-  };
-
-  const handleEasterEgg = async () => {
-    if (videoUrl || isGenerating) return;
-
-    try {
-        const win = window as any;
-        if (win.aistudio && typeof win.aistudio.hasSelectedApiKey === 'function') {
-            if (!win.aistudio.hasSelectedApiKey()) {
-                await win.aistudio.openSelectKey();
-            }
-        }
-
-        setIsGenerating(true);
-        setGenerationStatus("Preparing the stage...");
-
-        // 1. Get Image (use fallback if main image failed)
-        const base64Data = await getBase64Image(imgError ? fallbackSrc : imgSrc);
-
-        // 2. Init AI
-        // Always create a new instance to pick up the latest API key from env
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        
-        setGenerationStatus("Generating dance moves (this takes ~1-2 mins)...");
-
-        // 3. Start Video Generation
-        let operation = await ai.models.generateVideos({
-            model: 'veo-3.1-fast-generate-preview',
-            prompt: 'A photorealistic video of this person dancing energetically and happily in a professional setting, keeping the same lighting and attire. High quality.',
-            image: {
-                imageBytes: base64Data,
-                mimeType: 'image/jpeg',
-            },
-            config: {
-                numberOfVideos: 1,
-                resolution: '720p',
-                aspectRatio: '16:9'
-            }
-        });
-
-        // 4. Poll for completion
-        while (!operation.done) {
-            await new Promise(resolve => setTimeout(resolve, 10000));
-            operation = await ai.operations.getVideosOperation({ operation });
-            setGenerationStatus("Still dancing... (Veo is thinking)");
-        }
-
-        if (operation.error) {
-            // Throw the whole error object so we can stringify it later
-            throw operation.error; 
-        }
-
-        // 5. Download Video
-        setGenerationStatus("Downloading performance...");
-        const videoUri = operation.response?.generatedVideos?.[0]?.video?.uri;
-        if (!videoUri) throw new Error("No video URI returned");
-
-        const response = await fetch(`${videoUri}&key=${process.env.API_KEY}`);
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        
-        setVideoUrl(url);
-
-    } catch (e: any) {
-        console.error("Easter egg failed:", e);
-        
-        const errorBody = JSON.stringify(e);
-        const isPermissionError = errorBody.includes("403") || errorBody.includes("PERMISSION_DENIED");
-        const isNotFoundError = errorBody.includes("Requested entity was not found");
-        
-        const win = window as any;
-
-        if ((isPermissionError || isNotFoundError) && win.aistudio) {
-             try {
-                 await win.aistudio.openSelectKey();
-                 alert("The previously selected API Key was invalid or lacked permissions. Please select a valid Paid API Key to try again.");
-             } catch (k) {
-                 console.error("Failed to open key selector", k);
-             }
-        } else {
-             let errorMessage = "Could not generate the dance video.";
-             if (e?.message) {
-                  errorMessage += `\n\n${e.message}`;
-             } else {
-                  errorMessage += `\n\n${String(e)}`;
-             }
-             alert(errorMessage);
-        }
-    } finally {
-        setIsGenerating(false);
-    }
-  };
 
   const handlePromptSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -206,7 +60,6 @@ const Hero: React.FC = () => {
 
   return (
     <section id={SectionId.HERO} className="min-h-screen flex flex-col justify-center pt-24 relative overflow-hidden bg-slate-950">
-      {/* Subtle Grid Background */}
       <div className="absolute inset-0 z-0 opacity-[0.05]" 
            style={{
              backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
@@ -268,72 +121,37 @@ const Hero: React.FC = () => {
 
         {/* BOTTOM: Split Content */}
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Left Column: Image / Video */}
+            {/* Left Column: Image */}
             <div className="relative order-1 md:order-1 flex justify-center md:justify-end">
                 <div className="relative w-full aspect-square max-w-md">
-                    {/* Main Image Frame */}
-                    <div 
-                        className={`w-full h-full bg-slate-900 border-4 border-slate-600 p-3 shadow-[12px_12px_0px_0px_#1e293b] relative z-10 ${!videoUrl ? 'cursor-pointer hover:border-blue-500 transition-colors' : ''}`}
-                        onClick={handleEasterEgg}
-                    >
+                    <div className="w-full h-full bg-slate-900 border-4 border-slate-600 p-3 shadow-[12px_12px_0px_0px_#1e293b] relative z-10 hover:border-blue-500 transition-colors">
                         <div className="w-full h-full border-2 border-slate-700 overflow-hidden relative group">
-                        
-                        {videoUrl ? (
-                            <video 
-                                src={videoUrl} 
-                                autoPlay 
-                                loop 
-                                controls 
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <>
-                                {/* Original High-Res Image (Base) or Fallback Div */}
-                                {!imgError ? (
-                                    <img 
-                                        src={imgSrc} 
-                                        alt="Ryan Dumlao" 
-                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                        onError={() => setImgError(true)}
-                                    />
-                                ) : (
-                                    <div className="w-full h-full bg-slate-800 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
-                                        <span className="text-6xl font-['Press_Start_2P'] text-blue-500">RD</span>
-                                    </div>
-                                )}
-                                
-                                {/* Generated Pixel Art Overlay - Only show if image loaded successfully */}
-                                {pixelatedSrc && !isGenerating && !imgError && (
-                                    <img 
-                                        src={pixelatedSrc}
-                                        alt="Ryan Dumlao Pixel Art"
-                                        className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                        style={{ imageRendering: 'pixelated' }}
-                                    />
-                                )}
-
-                                {/* Easter Egg Hint */}
-                                {!isGenerating && (
-                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600 p-1 rounded-sm shadow-lg">
-                                        <Sparkles className="text-white w-5 h-5 animate-pulse" />
-                                    </div>
-                                )}
-
-                                {/* Loading Overlay */}
-                                {isGenerating && (
-                                    <div className="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center p-4 text-center">
-                                        <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-4" />
-                                        <p className="text-white font-['VT323'] text-xl animate-pulse">
-                                            {generationStatus}
-                                        </p>
-                                    </div>
-                                )}
-                            </>
-                        )}
+                            {!imgError ? (
+                                <img 
+                                    src={imgSrc} 
+                                    alt="Ryan Dumlao" 
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                                    onError={() => setImgError(true)}
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-slate-800 flex items-center justify-center group-hover:bg-slate-700 transition-colors">
+                                    <span className="text-6xl font-['Press_Start_2P'] text-blue-500">RD</span>
+                                </div>
+                            )}
+                            {pixelatedSrc && !imgError && (
+                                <img 
+                                    src={pixelatedSrc}
+                                    alt="Ryan Dumlao Pixel Art"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ imageRendering: 'pixelated' }}
+                                />
+                            )}
+                             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-blue-600 p-1 rounded-sm shadow-lg">
+                                <Sparkles className="text-white w-5 h-5 animate-pulse" />
+                            </div>
                         </div>
                     </div>
                     
-                    {/* Decorative Elements */}
                     <div className="absolute -top-4 -left-4 w-24 h-24 border-t-4 border-l-4 border-blue-600 -z-0"></div>
                     <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-4 border-r-4 border-blue-600 -z-0"></div>
                 </div>

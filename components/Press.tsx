@@ -17,8 +17,7 @@ const pressItems: PressItem[] = [
     source: "Fast Company",
     description: "Adobe recognized for design innovation under product leadership.",
     link: "https://www.fastcompany.com/91388791/adobe-innovation-by-design-2025",
-    // Generic Fast Co Innovation Award placeholder or Adobe Firefly press asset
-    imageUrl: "https://images.weserv.nl/?url=https://images.fastcompany.net/image/upload/w_1280,f_auto,q_auto,fl_lossy/wp-cms/uploads/2023/08/p-1-90932158-innovation-by-design-2023.jpg&w=600&q=80",
+    imageUrl: "./assets/img/press/fastcompany.jpg",
     icon: <Award size={24} className="text-yellow-500" />
   },
   {
@@ -26,8 +25,7 @@ const pressItems: PressItem[] = [
     source: "Adobe MAX 2025",
     description: "Speaker: Creating on iPhone and Android.",
     link: "https://www.adobe.com/max/2025/sessions/photoshop-in-your-pocket-creating-on-iphone-and-an-os322.html",
-    // Adobe MAX branding
-    imageUrl: "https://images.weserv.nl/?url=https://blog.adobe.com/en/publish/2022/10/18/media_1d2c1d3c05423631988863116562095817294503.jpeg&w=600&q=80",
+    imageUrl: "./assets/img/press/adobe-max.jpg",
     icon: <Mic size={24} className="text-blue-500" />
   },
   {
@@ -35,8 +33,7 @@ const pressItems: PressItem[] = [
     source: "Johto Times",
     description: "Discussing the legacy of running one of the largest Pokémon communities.",
     link: "https://johto.substack.com/p/interview-with-pokemon-abode?utm_medium=email&action=share",
-    // Using Ryan's Pokemon Abode screenshot with explicit http
-    imageUrl: "https://images.weserv.nl/?url=http://www.ryandumlao.com/img/portfolio/pa.jpg&w=600&q=80",
+    imageUrl: "./assets/img/press/johto-times.jpg",
     icon: <Newspaper size={24} className="text-purple-500" />
   },
   {
@@ -44,7 +41,7 @@ const pressItems: PressItem[] = [
     source: "YouTube",
     description: "Official demo of Photoshop running in the browser.",
     link: "https://www.youtube.com/watch?v=G_f_1U1edBI",
-    imageUrl: "https://img.youtube.com/vi/G_f_1U1edBI/hqdefault.jpg",
+    imageUrl: "./assets/img/press/photoshop-web-demo.jpg",
     icon: <Video size={24} className="text-red-500" />
   },
   {
@@ -52,7 +49,7 @@ const pressItems: PressItem[] = [
     source: "YouTube",
     description: "Live demonstration of new creative workflows.",
     link: "https://www.youtube.com/watch?v=MDKplRRu0y4&t=6775s",
-    imageUrl: "https://img.youtube.com/vi/MDKplRRu0y4/hqdefault.jpg",
+    imageUrl: "./assets/img/press/adobe-live.jpg",
     icon: <Video size={24} className="text-red-500" />
   },
   {
@@ -60,8 +57,7 @@ const pressItems: PressItem[] = [
     source: "O'Reilly Media",
     description: "Cited in the forward for product contributions.",
     link: "https://www.oreilly.com/library/view/photoshop-on-the/9780138213923/",
-    // Valid O'Reilly Cover URL
-    imageUrl: "https://m.media-amazon.com/images/I/71s+5+5+5+L._AC_UF1000,1000_QL80_.jpg",
+    imageUrl: "./assets/img/press/oreilly-book.jpg",
     icon: <BookOpen size={24} className="text-green-500" />
   },
   {
@@ -69,8 +65,7 @@ const pressItems: PressItem[] = [
     source: "The Verge",
     description: "Coverage of the launch of Camera Raw support on mobile.",
     link: "https://www.theverge.com/2021/10/12/22722122/adobe-photoshop-ipad-camera-raw-support-coming-soon",
-    // Verge/Adobe Press Asset
-    imageUrl: "https://cdn.vox-cdn.com/thumbor/yM2y7d1v1v1v1v1v1v1v1v1v1v1=/0x0:2040x1360/1200x800/filters:focal(857x517:1183x843)/cdn.vox-cdn.com/uploads/chorus_image/image/70000000/acastro_211011_4780_adobe_photoshop_ipad_0001.0.jpg",
+    imageUrl: "./assets/img/press/verge.jpg",
     icon: <ExternalLink size={24} className="text-slate-400" />
   },
   {
@@ -78,8 +73,7 @@ const pressItems: PressItem[] = [
     source: "Adobe Blog",
     description: "Deep dive into new mobile-first features.",
     link: "https://blog.adobe.com/en/publish/2022/05/10/photoshop-on-the-ipad-brings-plenty-of-one-tap-magic-into-spring",
-    // Adobe Blog header image (proxy)
-    imageUrl: "https://blog.adobe.com/en/publish/2022/05/10/media_1495c25e865f17109789c93717208764268393551.jpeg",
+    imageUrl: "./assets/img/press/adobe-blog.jpg",
     icon: <ExternalLink size={24} className="text-slate-400" />
   },
   {
@@ -87,7 +81,7 @@ const pressItems: PressItem[] = [
     source: "YouTube",
     description: "Showcasing the power of Photoshop on the web.",
     link: "https://www.youtube.com/watch?v=mvpN-8Ve3TU",
-    imageUrl: "https://img.youtube.com/vi/mvpN-8Ve3TU/hqdefault.jpg",
+    imageUrl: "./assets/img/press/photoshop-web-announce.jpg",
     icon: <Video size={24} className="text-red-500" />
   },
   {
@@ -95,7 +89,7 @@ const pressItems: PressItem[] = [
     source: "YouTube",
     description: "Review of key updates and features.",
     link: "https://www.youtube.com/watch?v=TR-CShNslf8",
-    imageUrl: "https://img.youtube.com/vi/TR-CShNslf8/hqdefault.jpg",
+    imageUrl: "./assets/img/press/photoshop-ipad-updates.jpg",
     icon: <Video size={24} className="text-red-500" />
   }
 ];
